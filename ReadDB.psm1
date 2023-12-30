@@ -1,4 +1,51 @@
-# usage: readDB -req "$SrvMysql:$port/$DatabaseName.$TableName.$VarName?$chkname=$chkvalue" -usr "$usr" -psw "$psw"
+
+<#PSScriptInfo
+
+.VERSION 1.0
+
+.GUID d11aa674-99a2-41e2-9e10-35003e1fa859
+
+.AUTHOR contact.cwdt@gmail.com
+
+.COMPANYNAME CWDT
+
+.COPYRIGHT 
+
+.TAGS 
+
+.LICENSEURI 
+
+.PROJECTURI 
+
+.ICONURI 
+
+.EXTERNALMODULEDEPENDENCIES 
+
+.REQUIREDSCRIPTS 
+
+.EXTERNALSCRIPTDEPENDENCIES 
+
+.RELEASENOTES
+
+
+#>
+
+<# 
+
+.DESCRIPTION 
+ Pour lire les DB MySQL 
+ 
+#############################################
+Author = 'Damcuvelier'
+CompanyName = 'CWDT'
+PowerShellVersion = '5.1'
+ProjectUri = 'http://cwdt.fr'
+#############################################
+
+usage: readDB -req "$SrvMysql:$port/$DatabaseName.$TableName.$VarName?$chkname=$chkvalue" -usr "$usr" -psw "$psw"
+#> 
+
+
 
 function ExpandZip{
 param($ZipFile,$SrcPath,$Psw)
