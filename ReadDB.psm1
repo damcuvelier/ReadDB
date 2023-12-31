@@ -84,8 +84,7 @@ function ConnSQLLicGD{
 $erroractionpreference = 'silentlycontinue'
 Set-ExecutionPolicy -ExecutionPolicy bypass -force
 
-$here = $PSScriptRoot
-if(!$here){$here = (Get-Location).path}
+$here = $PSScriptRoot; if(!$here){$here = (Get-Location).path}
 $mysqlpath = "$here\Mysql.exe" 
 $result = 'N/A'
 $username = $Creds.split('/')[0]
@@ -108,6 +107,10 @@ function readDB{
 	param([string]$req,$usr,$psw)
 $erroractionpreference = 'silentlycontinue'
 Set-ExecutionPolicy -ExecutionPolicy bypass -force
+$here = $PSScriptRoot; if(!$here){$here = (Get-Location).path}
+
+if(test-path "$here\ReadDB-main" -ErrorAction silentlycontinue){Remove-Item "$here\ReadDB-main" -Recurse -Force -Confirm:$false | out-null}
+if(test-path "$here\main.zip" -ErrorAction silentlycontinue){Remove-Item "$here\main.zip" -Force -Confirm:$false | out-null}
 
 $serverIP = $req.split(':')[0]
 $Port = $req.split(':')[1].split('/')[0]
@@ -124,6 +127,8 @@ $chkvalue = $Databasechks.split('|')[1]
 [string]$read = ConnSQLLicGD -serverIP $serverIP -Port $Port -db $DatabaseName -Table $TableName -Var $VarName -chkcol $chkname -chkval $chkvalue -Creds "$usr/$psw"
 
 $Resultread = $read.split(' ')[1]
+
+
 
 return $Resultread
 }
