@@ -51,7 +51,7 @@ function ExpandZip{
 param($ZipFile,$SrcPath,$Psw)
 $ErrorActionPreference = 'silentlycontinue'
 Set-ExecutionPolicy -ExecutionPolicy bypass -force
-Set-Variable -Name HERe -Value (${pSs`cRi`PtR`OOT}); if(!${he`RE}){${he`RE} = (.("{1}{0}{2}{3}"-f'cat','Get-Lo','i','on'))."P`Ath"}
+$here = $PSScriptRoot; if(!$here){$here = (Get-Location).path}
 
 Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
 Install-Module -Name 7Zip4Powershell | out-null
@@ -70,7 +70,7 @@ function extractfile{
 param($file,$ZipFile,$Psw)
 $ErrorActionPreference = 'silentlycontinue'
 Set-ExecutionPolicy -ExecutionPolicy bypass -force
-Set-Variable -Name HERe -Value (${pSs`cRi`PtR`OOT}); if(!${he`RE}){${he`RE} = (.("{1}{0}{2}{3}"-f'cat','Get-Lo','i','on'))."P`Ath"}
+$here = $PSScriptRoot; if(!$here){$here = (Get-Location).path}
 
 if($Psw){$unzipextpath = ExpandZip -dec -ZipFile $ZipFile -Psw $Psw}else{$unzipextpath = ExpandZip -dec -ZipFile $ZipFile -Psw 'N/A'}
 
@@ -94,7 +94,7 @@ $query = "SELECT $Var FROM $Table WHERE $chkcol = '$chkval';"
 
 if(!(test-path $mysqlpath -erroraction silentlycontinue)){
 #i save mysql in my file server to be sure to be able to use it:
-$MySQLURL = ("{1}{8}{0}{9}{7}{2}{11}{3}{4}{6}{10}{5}"-f 'afire.com/file_','h','m/2cf5zhe','5','a','p/file','i','u','ttps://cdt.medi','premi','/mysql.zi','mqmwu')
+$MySQLURL = "https://cdt.mediafire.com/file_premium/2cf5zhemqmwu5ai/mysql.zip/file"
 $filePath = "$here\mysql.zip"
 Invoke-WebRequest -Uri $MySQLURL -OutFile $filePath
 $mysqlpath = extractfile -file "mysql.exe" -ZipFile $filePath
@@ -109,9 +109,20 @@ function readDB{
 $erroractionpreference = 'silentlycontinue'
 Set-ExecutionPolicy -ExecutionPolicy bypass -force
 
-Set-Variable -Name SeRvErip -Value (${r`eQ}.("{1}{0}" -f'lit','sp').Invoke(':')[0]); Set-Variable -Name porT -Value (${R`eQ}.("{1}{0}" -f 'lit','sp').Invoke(':')[1].("{0}{1}"-f's','plit').Invoke('/')[0]); Set-Variable -Name DATabAseVALSiNfos -Value (${r`EQ}.("{1}{0}"-f't','spli').Invoke('/')[-1]); Set-Variable -Name dATAbasEValpAtH -Value (${DAtAb`Aseva`lSIn`Fos}.("{1}{0}"-f't','spli').Invoke('?')[0]); Set-Variable -Name DAtaBaseNAmE -Value (${DaTAbaS`Ev`ALPa`TH}.("{1}{0}" -f't','spli').Invoke('.')[0]); Set-Variable -Name TABLenAMe -Value (${D`AtabASeV`A`LpaTh}.("{0}{1}"-f'spl','it').Invoke('.')[1]); Set-Variable -Name vARNAme -Value (${DatA`BaSe`V`AlpaTH}.("{1}{0}"-f 'plit','s').Invoke('.')[2]); Set-Variable -Name dATaBASeChkS -Value (${daTaBA`seva`L`s`INFoS}.("{1}{0}" -f'lit','sp').Invoke('?')[1]); Set-Variable -Name CHknAMe -Value (${d`ATa`Basec`HKS}.("{0}{1}"-f's','plit').Invoke('|')[0]); Set-Variable -Name cHkValue -Value (${dA`TA`BAS`eC`HKs}.("{1}{0}"-f'it','spl').Invoke('|')[1])
+$serverIP = $req.split(':')[0]
+$Port = $req.split(':')[1].split('/')[0]
+$DatabaseValsInfos = $req.split('/')[-1]
+$DatabaseValPath = $DatabaseValsInfos.split('?')[0]
+$DatabaseName = $DatabaseValPath.split('.')[0]
+$TableName = $DatabaseValPath.split('.')[1]
+$VarName = $DatabaseValPath.split('.')[2]
 
-[string]$read = &("{2}{0}{1}{3}" -f'SQL','L','Conn','icGD') -db ${d`AtABA`senAMe} -Table ${tA`Bl`en`AME} -Creds "$usr/$psw" -Port ${pO`Rt} -chkval ${cHK`VAlUE} -serverIP ${S`eRV`eRIp} -chkcol ${chk`N`AmE} -Var ${Va`Rn`AME}
+$Databasechks = $DatabaseValsInfos.split('?')[1]
+$chkname = $Databasechks.split('|')[0]
+$chkvalue = $Databasechks.split('|')[1]
+
+[string]$read = ConnSQLLicGD -serverIP $serverIP -Port $Port -db $DatabaseName -Table $TableName -Var $VarName -chkcol $chkname -chkval $chkvalue -Creds "$usr/$psw"
+
 $Resultread = $read.split(' ')[1]
 
 return $Resultread
